@@ -27,16 +27,14 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class PlaySerializer(serializers.ModelSerializer):
-    genres = GenreSerializer(many=True)
-
     class Meta:
         model = Play
-        fields = ['id', 'title', 'description', 'genres']
+        fields = ['id', 'title', 'description']
 
 
 class PerformanceSerializer(serializers.ModelSerializer):
-    play = PlaySerializer()
-    theatre_hall = TheatreHallSerializer()
+    play = serializers.PrimaryKeyRelatedField(queryset=Play.objects.all())
+    theatre_hall = serializers.PrimaryKeyRelatedField(queryset=TheatreHall.objects.all())
 
     class Meta:
         model = Performance
