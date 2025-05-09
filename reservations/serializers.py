@@ -19,6 +19,18 @@ class TicketSerializer(serializers.ModelSerializer):
         fields = ['id', 'row', 'seat', 'performance', 'reservation']
         read_only_fields = ['id']
 
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        performance = attrs["performance"]
+        seat = attrs["seat"]
+        row = attrs["row"]
+
+        Ticket.validate_seat(seat, row, performance)
+        Ticket.validate_row(row, performance)
+
+        return data
+
     def create(self, validated_data):
         reservation_data = validated_data.pop('reservation', None)
         if reservation_data is None:
