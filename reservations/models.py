@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from theatre.models import Performance
+from theater.models import Performance
 
 
 class Reservation(models.Model):
