@@ -1,21 +1,18 @@
 from rest_framework import viewsets
-from .models import Reservation, Ticket
-from .serializers import ReservationSerializer, TicketSerializer
+from .models import Ticket
+from .serializers import TicketSerializer
 from rest_framework.permissions import IsAuthenticated
 
-
-class ReservationViewSet(viewsets.ModelViewSet):
-    queryset = Reservation.objects.all()
-    serializer_class = ReservationSerializer
-    permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Ticket.objects.filter(
+            reservation__user=self.request.user
+        ).select_related('reservation')
 
     def perform_create(self, serializer):
         serializer.save()

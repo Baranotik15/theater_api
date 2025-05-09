@@ -41,6 +41,6 @@ class Ticket(models.Model):
     def __str__(self):
         return (
             f"Ticket for "
-            f"{self.performance.title} at Row "
+            f"{self.performance.play} at Row "
             f"{self.row}, Seat {self.seat}"
         )

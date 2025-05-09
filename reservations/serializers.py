@@ -2,15 +2,35 @@ from rest_framework import serializers
 from .models import Reservation, Ticket
 
 
-class TicketSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ticket
-        fields = ['id', 'row', 'seat', 'performance', 'reservation']
-
-
 class ReservationSerializer(serializers.ModelSerializer):
-    tickets = TicketSerializer(many=True, read_only=True)
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Reservation
-        fields = ['id', 'created_at', 'user', 'tickets']
+        fields = ['id', 'created_at', 'user']
+        read_only_fields = ['id', 'created_at']
+
+
+class TicketSerializer(serializers.ModelSerializer):
+    reservation = ReservationSerializer(required=False)
+
+    class Meta:
+        model = Ticket
+        fields = ['id', 'row', 'seat', 'performance', 'reservation']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        reservation_data = validated_data.pop('reservation', None)
+        if reservation_data is None:
+            reservation = Reservation.objects.create(
+                user=self.context['request'].user
+            )
+        else:
+            reservation = Reservation.objects.create(
+                user=reservation_data['user']
+            )
+        ticket = Ticket.objects.create(
+            reservation=reservation,
+            **validated_data
+        )
+        return ticket
