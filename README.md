@@ -17,7 +17,7 @@ The **Theater Service** is a RESTful API built with Django REST Framework that m
 - 🧑‍💼 Django Admin Panel
 - 📄 Swagger/OpenAPI documentation via drf-spectacular
 - 🐳 Docker support
-- 📁 Modular structure: `users`, `theater`, `reservations`
+- 📁 Modular structure: `users`, `theater`, `reservations`, `theater_service`
 
 ## Model diagram
 
@@ -57,12 +57,27 @@ docker-compose up --build
 docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py createsuperuser
 ```
+## 🧾 Register
+
+To create a new user account:
+
+**POST** `/api/users/register/`
+
+**Request body:**
+
+```json
+{
+  "username": "your_username",
+  "password": "your_password"
+}
+```
+
 ## 🔑 Authentication
 This project uses JWT for user authentication.
 
 ### Obtain token:
 
-**POST /api/token/**
+**POST /api/users/token/**
 
 Request body:
 ```json
@@ -81,7 +96,7 @@ Response:
 _____________________________
 ### Refresh token:
 
-**POST /api/token/refresh/**
+**POST /api/users/token/refresh/**
 
 Request body:
 ```json
