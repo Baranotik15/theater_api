@@ -7,8 +7,8 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reservation
-        fields = ['id', 'created_at', 'user']
-        read_only_fields = ['id', 'created_at']
+        fields = ["id", "created_at", "user"]
+        read_only_fields = ["id", "created_at"]
 
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -16,8 +16,8 @@ class TicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ticket
-        fields = ['id', 'row', 'seat', 'performance', 'reservation']
-        read_only_fields = ['id']
+        fields = ["id", "row", "seat", "performance", "reservation"]
+        read_only_fields = ["id"]
 
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -32,17 +32,16 @@ class TicketSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        reservation_data = validated_data.pop('reservation', None)
+        reservation_data = validated_data.pop("reservation", None)
         if reservation_data is None:
             reservation = Reservation.objects.create(
-                user=self.context['request'].user
+                user=self.context["request"].user
             )
         else:
             reservation = Reservation.objects.create(
-                user=reservation_data['user']
+                user=reservation_data["user"]
             )
         ticket = Ticket.objects.create(
-            reservation=reservation,
-            **validated_data
+            reservation=reservation, **validated_data
         )
         return ticket

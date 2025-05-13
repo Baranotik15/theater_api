@@ -5,16 +5,16 @@ from .views import (
     ActorViewSet,
     GenreViewSet,
     PlayViewSet,
-    PerformanceViewSet
+    PerformanceViewSet,
 )
 
 router = DefaultRouter()
-router.register(r'theatre_halls', TheatreHallViewSet)
-router.register(r'actors', ActorViewSet)
-router.register(r'genres', GenreViewSet)
-router.register(r'plays', PlayViewSet)
-router.register(r'performances', PerformanceViewSet)
+router.register(r"theatre_halls", TheatreHallViewSet)
+router.register(r"actors", ActorViewSet)
+router.register(r"genres", GenreViewSet)
+router.register(r"plays", PlayViewSet)
+router.register(r"performances", PerformanceViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]

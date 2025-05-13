@@ -17,15 +17,13 @@ class TicketViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Ticket.objects.filter(
             reservation__user=self.request.user
-        ).select_related('reservation')
+        ).select_related("reservation")
 
     @extend_schema(
         request=TicketSerializer,
         responses={
             201: TicketSerializer,
-            400: OpenApiResponse(
-                description="Bad Request: Invalid data"
-            ),
+            400: OpenApiResponse(description="Bad Request: Invalid data"),
         },
         operation_id="create_ticket",
         description="Create a new ticket for the "
@@ -45,21 +43,19 @@ class TicketViewSet(viewsets.ModelViewSet):
             200: TicketSerializer,
             403: OpenApiResponse(
                 description="Forbidden: You do not have "
-                            "permission to view this ticket."
+                "permission to view this ticket."
             ),
         },
         operation_id="get_ticket",
         description="Retrieve a specific ticket for the "
-                    "logged-in user. Only tickets related "
-                    "to the authenticated user are allowed.",
+        "logged-in user. Only tickets related "
+        "to the authenticated user are allowed.",
     )
     def retrieve(self, request, *args, **kwargs):
         ticket = self.get_object()
         if ticket.reservation.user != request.user:
             return Response(
-                {
-                    "detail": "You do not have permission to view this ticket."
-                },
-                status=status.HTTP_403_FORBIDDEN
+                {"detail": "You do not have permission to view this ticket."},
+                status=status.HTTP_403_FORBIDDEN,
             )
         return super().retrieve(request, *args, **kwargs)

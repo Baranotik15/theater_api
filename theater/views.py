@@ -1,18 +1,12 @@
 from rest_framework import viewsets
-from theater.models import (
-    TheatreHall,
-    Actor,
-    Genre,
-    Play,
-    Performance
-)
+from theater.models import TheatreHall, Actor, Genre, Play, Performance
 from theater.permissions import IsAdminOrReadOnly
 from theater.serializers import (
     TheatreHallSerializer,
     ActorSerializer,
     GenreSerializer,
     PlaySerializer,
-    PerformanceSerializer
+    PerformanceSerializer,
 )
 
 

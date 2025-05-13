@@ -9,10 +9,7 @@ class Reservation(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def __str__(self):
-        return (
-            f"Reservation by "
-            f"{self.user.username} on {self.created_at}"
-        )
+        return f"Reservation by " f"{self.user.username} on {self.created_at}"
 
 
 class Ticket(models.Model):
@@ -22,7 +19,7 @@ class Ticket(models.Model):
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('performance', 'row', 'seat')
+        unique_together = ("performance", "row", "seat")
 
     @staticmethod
     def validate_row(row, performance):
@@ -44,11 +41,13 @@ class Ticket(models.Model):
         Ticket.validate_row(self.row, self.performance)
         Ticket.validate_seat(self.seat, self.row, self.performance)
 
-        if Ticket.objects.filter(
-            performance=self.performance,
-            row=self.row,
-            seat=self.seat
-        ).exclude(pk=self.pk).exists():
+        if (
+            Ticket.objects.filter(
+                performance=self.performance, row=self.row, seat=self.seat
+            )
+            .exclude(pk=self.pk)
+            .exists()
+        ):
             raise ValidationError(
                 "This seat is already reserved for this performance."
             )

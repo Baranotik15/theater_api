@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reservations', '0002_initial'),
-        ('theater', '0001_initial'),
+        ("reservations", "0002_initial"),
+        ("theater", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='ticket',
-            unique_together={('performance', 'row', 'seat')},
+            name="ticket",
+            unique_together={("performance", "row", "seat")},
         ),
     ]

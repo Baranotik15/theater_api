@@ -15,7 +15,7 @@ class Actor(models.Model):
     last_name = models.CharField(max_length=100)
 
     class Meta:
-        unique_together = ('first_name', 'last_name')
+        unique_together = ("first_name", "last_name")
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -42,7 +42,7 @@ class Performance(models.Model):
     show_time = models.DateTimeField()
 
     class Meta:
-        unique_together = ('play', 'theatre_hall', 'show_time')
+        unique_together = ("play", "theatre_hall", "show_time")
 
     def __str__(self):
         return (
