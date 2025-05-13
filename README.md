@@ -20,7 +20,7 @@ The **Theater Service** is a RESTful API built with Django REST Framework that m
 - 📁 Modular structure: `users`, `theater`, `reservations`, `theater_service`
 
 ## Model diagram
-
+![image-removebg-preview (3)](https://github.com/user-attachments/assets/d4bb7de3-4023-48f1-bd46-2d58ed514ca2)
 
 ## 🚀 Quick Start
 
