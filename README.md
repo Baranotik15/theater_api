@@ -16,7 +16,7 @@ The **Theater Service** is a RESTful API built with Django REST Framework that m
   - Authenticated users: read-only access
 - 🧑‍💼 Django Admin Panel
 - 📄 Swagger/OpenAPI documentation via drf-spectacular
-- 🐳 Docker support
+- 🐳 Docker support with Gunicorn for production-ready deployment
 - 📁 Modular structure: `users`, `theater`, `reservations`, `theater_service`
 
 ## Model diagram
@@ -51,6 +51,7 @@ DB_PORT=5432
 ```bash
 docker-compose up --build
 ```
+The application will start with Gunicorn server on http://localhost:8000
 
 ### 2. Apply migrations and create a superuser
 ```bash
@@ -116,4 +117,5 @@ You can access the Swagger UI documentation at:
 - Simple JWT
 - drf-spectacular
 - PostgreSQL
+- Gunicorn (Production WSGI Server)
 - Docker & Docker Compose
