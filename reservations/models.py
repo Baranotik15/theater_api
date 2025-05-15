@@ -10,7 +10,8 @@ class Reservation(models.Model):
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name = "reservations"
     )
 
     def __str__(self):
@@ -22,11 +23,13 @@ class Ticket(models.Model):
     seat = models.PositiveIntegerField()
     performance = models.ForeignKey(
         Performance,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name = "tickets"
     )
     reservation = models.ForeignKey(
         Reservation,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name = "tickets"
     )
 
     class Meta:

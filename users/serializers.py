@@ -33,29 +33,3 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
                 "Username must be at least 3 characters long."
             )
         return value
-
-
-class UserRegistrationView(views.APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            return Response(
-                {
-                    "detail": "User created successfully",
-                    "username": user.username,
-                    "email": user.email,
-                },
-                status=status.HTTP_201_CREATED,
-            )
-        return Response(
-            {
-                "detail": "Invalid data",
-                "errors": serializer.errors,
-                "message": "Ensure that all required fields are "
-                "filled out and meet validation requirements.",
-            },
-            status=status.HTTP_400_BAD_REQUEST,
-        )
