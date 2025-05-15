@@ -4,8 +4,8 @@ from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
-from .models import Ticket
-from .serializers import TicketSerializer
+from reservations.models import Ticket
+from reservations.serializers import TicketSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
