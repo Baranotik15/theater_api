@@ -150,3 +150,96 @@ class TicketViewSetTest(TestCase):
             response.status_code,
             status.HTTP_403_FORBIDDEN
         )
+
+    def test_create_ticket_invalid_seat(self):
+        """Test creating a ticket with invalid seat number"""
+        data = {
+            "reservation": self.reservation.id,
+            "row": 5,
+            "seat": 25
+        }
+        response = self.client.post(
+            reverse("ticket-list"),
+            data,
+            format="json"
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+        self.assertEqual(
+            Ticket.objects.count(),
+            0
+        )
+
+    def test_create_ticket_invalid_row(self):
+        """Test creating a ticket with invalid row number"""
+        data = {
+            "reservation": self.reservation.id,
+            "row": 15,
+            "seat": 10
+        }
+        response = self.client.post(
+            reverse("ticket-list"),
+            data,
+            format="json"
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+        self.assertEqual(
+            Ticket.objects.count(),
+            0
+        )
+
+    def test_create_duplicate_ticket(self):
+        """Test creating a ticket for already reserved seat"""
+        Ticket.objects.create(
+            reservation=self.reservation,
+            row=5,
+            seat=10
+        )
+
+        data = {
+            "reservation": self.reservation.id,
+            "row": 5,
+            "seat": 10
+        }
+        response = self.client.post(
+            reverse("ticket-list"),
+            data,
+            format="json"
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+        self.assertEqual(
+            Ticket.objects.count(),
+            1
+        )
+
+    def test_list_tickets_unauthenticated(self):
+        """Test listing tickets without authentication"""
+        self.client.force_authenticate(user=None)
+        response = self.client.get(
+            reverse("ticket-list")
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_401_UNAUTHORIZED
+        )
+
+    def test_get_nonexistent_ticket(self):
+        """Test getting a non-existent ticket"""
+        response = self.client.get(
+            reverse(
+                "ticket-detail",
+                kwargs={"pk": 99999}
+            )
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_404_NOT_FOUND
+        )

@@ -76,6 +76,50 @@ class TheaterViewsTest(TestCase):
             "New Hall"
         )
 
+    def test_create_theatre_hall_invalid_data(self):
+        """Test creating a theatre hall with invalid data"""
+        data = {
+            "name": "",
+            "rows": -1,
+            "seats_in_row": 0,
+            "capacity": "invalid"
+        }
+        response = self.client.post(
+            reverse("theatrehall-list"),
+            data,
+            format="json"
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+        self.assertEqual(
+            TheatreHall.objects.count(),
+            1
+        )
+
+    def test_create_duplicate_theatre_hall(self):
+        """Test creating a theatre hall with duplicate name"""
+        data = {
+            "name": "Main Hall",
+            "rows": 15,
+            "seats_in_row": 25,
+            "capacity": 375
+        }
+        response = self.client.post(
+            reverse("theatrehall-list"),
+            data,
+            format="json"
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+        self.assertEqual(
+            TheatreHall.objects.count(),
+            1
+        )
+
     def test_play_detail(self):
         """Test getting play details"""
         response = self.client.get(
@@ -95,6 +139,19 @@ class TheaterViewsTest(TestCase):
         self.assertEqual(
             response.data["description"],
             "Shakespeare's masterpiece"
+        )
+
+    def test_get_nonexistent_play(self):
+        """Test getting details of a non-existent play"""
+        response = self.client.get(
+            reverse(
+                "play-detail",
+                kwargs={"pk": 99999}
+            )
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_404_NOT_FOUND
         )
 
     def test_create_performance(self):
@@ -120,6 +177,27 @@ class TheaterViewsTest(TestCase):
         self.assertEqual(
             Performance.objects.last().show_time.isoformat(),
             "2024-03-21T19:00:00+00:00",
+        )
+
+    def test_create_performance_invalid_data(self):
+        """Test creating a performance with invalid data"""
+        data = {
+            "play": 99999,
+            "theatre_hall": self.theatre_hall.id,
+            "show_time": "invalid-date"
+        }
+        response = self.client.post(
+            reverse("performance-list"),
+            data,
+            format="json"
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+        self.assertEqual(
+            Performance.objects.count(),
+            1
         )
 
     def test_play_list(self):
