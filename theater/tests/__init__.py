@@ -1,3 +1,3 @@
 """
 Tests for theater app
-""" 
+"""

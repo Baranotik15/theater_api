@@ -54,9 +54,8 @@ class UserRegistrationView(views.APIView):
             {
                 "detail": "Invalid data",
                 "errors": serializer.errors,
-                "message":
-                    "Ensure that all required fields are "
-                    "filled out and meet validation requirements.",
+                "message": "Ensure that all required fields are "
+                "filled out and meet validation requirements.",
             },
             status=status.HTTP_400_BAD_REQUEST,
         )

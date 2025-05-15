@@ -26,8 +26,8 @@ class TicketViewSet(viewsets.ModelViewSet):
             400: OpenApiResponse(description="Bad Request: Invalid data"),
         },
         operation_id="create_ticket",
-        description="Create a new ticket for the "
-                    "authenticated user's reservation.",
+        description="Create a new ticket for "
+                    "the " "authenticated user's reservation.",
     )
     def perform_create(self, serializer):
         with transaction.atomic():

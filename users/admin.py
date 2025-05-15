@@ -40,7 +40,10 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {"fields": ("username", "email", "password1", "password2")}),
         (_("Personal info"), {"fields": ("first_name", "last_name")}),
-        (_("Permissions"), {"fields": ("is_active", "is_staff", "is_superuser")}), # noqa
+        (
+            _("Permissions"),
+            {"fields": ("is_active", "is_staff", "is_superuser")},
+        ),  # noqa
     )
     filter_horizontal = ("groups", "user_permissions")
 

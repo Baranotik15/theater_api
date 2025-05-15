@@ -91,7 +91,8 @@ class Migration(migrations.Migration):
                 (
                     "play",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="theater.play"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="theater.play"
                     ),
                 ),
                 (
