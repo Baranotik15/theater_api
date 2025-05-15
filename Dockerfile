@@ -14,10 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Создаем директорию для статических файлов
 RUN mkdir -p staticfiles
 
-# Собираем статические файлы
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000

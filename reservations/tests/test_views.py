@@ -18,7 +18,9 @@ class TicketViewSetTest(TestCase):
             username="testuser"
         )
         self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
+        self.client.force_authenticate(
+            user=self.user
+        )
 
         self.theatre_hall = TheatreHall.objects.create(
             name="Main Hall",
@@ -42,17 +44,33 @@ class TicketViewSetTest(TestCase):
 
     def test_create_ticket(self):
         """Test creating a ticket"""
-        data = {"reservation": self.reservation.id, "row": 5, "seat": 10}
+        data = {
+            "reservation": self.reservation.id,
+            "row": 5,
+            "seat": 10
+        }
         response = self.client.post(
             reverse("ticket-list"),
             data,
             format="json"
         )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Ticket.objects.count(), 1)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_201_CREATED
+        )
+        self.assertEqual(
+            Ticket.objects.count(),
+            1
+        )
         ticket = Ticket.objects.first()
-        self.assertEqual(ticket.row, 5)
-        self.assertEqual(ticket.seat, 10)
+        self.assertEqual(
+            ticket.row,
+            5
+        )
+        self.assertEqual(
+            ticket.seat,
+            10
+        )
 
     def test_list_user_tickets(self):
         """Test listing user's tickets"""
@@ -67,10 +85,21 @@ class TicketViewSetTest(TestCase):
             seat=2
         )
 
-        response = self.client.get(reverse("ticket-list"))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], 2)
-        self.assertEqual(len(response.data["results"]), 2)
+        response = self.client.get(
+            reverse("ticket-list")
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )
+        self.assertEqual(
+            response.data["count"],
+            2
+        )
+        self.assertEqual(
+            len(response.data["results"]),
+            2
+        )
 
     def test_retrieve_own_ticket(self):
         """Test retrieving own ticket"""
@@ -85,8 +114,14 @@ class TicketViewSetTest(TestCase):
                 kwargs={"pk": ticket.id}
             )
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["row"], 1)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )
+        self.assertEqual(
+            response.data["row"],
+            1
+        )
 
     def test_retrieve_other_user_ticket(self):
         """Test retrieving another user's ticket"""
@@ -111,4 +146,7 @@ class TicketViewSetTest(TestCase):
                 kwargs={"pk": other_ticket.id}
             )
         )
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_403_FORBIDDEN
+        )

@@ -24,12 +24,26 @@ class UserRegistrationTest(TestCase):
             self.user_data,
             format="json"
         )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_201_CREATED
+        )
+        self.assertEqual(
+            User.objects.count(),
+            1
+        )
         user = User.objects.first()
-        self.assertEqual(user.username, self.user_data["username"])
-        self.assertEqual(user.email, self.user_data["email"])
-        self.assertTrue("detail" in response.data)
+        self.assertEqual(
+            user.username,
+            self.user_data["username"]
+        )
+        self.assertEqual(
+            user.email,
+            self.user_data["email"]
+        )
+        self.assertTrue(
+            "detail" in response.data
+        )
         self.assertEqual(
             response.data["username"],
             self.user_data["username"]
@@ -46,30 +60,64 @@ class UserRegistrationTest(TestCase):
             data,
             format="json"
         )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_201_CREATED
+        )
+        self.assertEqual(
+            User.objects.count(),
+            1
+        )
 
     def test_user_registration_invalid_password(self):
         """Test registration with invalid password"""
         data = self.user_data.copy()
         data["password"] = "123"
-        response = self.client.post(self.register_url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue("password" in response.data["errors"])
-        self.assertEqual(User.objects.count(), 0)
+        response = self.client.post(
+            self.register_url,
+            data,
+            format="json"
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+        self.assertTrue(
+            "password" in response.data["errors"]
+        )
+        self.assertEqual(
+            User.objects.count(),
+            0
+        )
 
     def test_user_registration_invalid_username(self):
         """Test registration with invalid username"""
         data = self.user_data.copy()
         data["username"] = "ab"
-        response = self.client.post(self.register_url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue("username" in response.data["errors"])
-        self.assertEqual(User.objects.count(), 0)
+        response = self.client.post(
+            self.register_url,
+            data,
+            format="json"
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+        self.assertTrue(
+            "username" in response.data["errors"]
+        )
+        self.assertEqual(
+            User.objects.count(),
+            0
+        )
 
     def test_user_registration_duplicate_username(self):
         """Test registration with duplicate username"""
-        self.client.post(self.register_url, self.user_data, format="json")
+        self.client.post(
+            self.register_url,
+            self.user_data,
+            format="json"
+        )
 
         duplicate_data = self.user_data.copy()
         duplicate_data["email"] = "another@example.com"
@@ -78,6 +126,14 @@ class UserRegistrationTest(TestCase):
             duplicate_data,
             format="json"
         )
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue("username" in response.data["errors"])
-        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
+        self.assertTrue(
+            "username" in response.data["errors"]
+        )
+        self.assertEqual(
+            User.objects.count(),
+            1
+        )
